@@ -14,14 +14,12 @@ namespace TrafficLights
     {
         private Timer timerSwitch = null;
         private Timer timerBlink = null;
-        private int timeCounter = 0;
-        private PictureBox lightToBlink = null;
-        private Color colorToCheck = Color.Gray;
+        private int timerCounter = 0;
 
         public TrafficLights()
         {
             InitializeComponent();
-            InitializeTrafficLights();
+            InitializeTrafficLight();
             InitializeTimerSwitch();
             InitializeTimerBlink();
         }
@@ -43,26 +41,14 @@ namespace TrafficLights
 
         private void TimerBlink_Tick(object sender, EventArgs e)
         {
-            if (lightToBlink.BackColor == Color.Gray)
+            if(GreenLight.BackColor == Color.Gray)
             {
-                lightToBlink.BackColor = colorToCheck;
+                GreenLight.BackColor = Color.Green;
             }
             else
             {
-                lightToBlink.BackColor = Color.Gray;
+                GreenLight.BackColor = Color.Gray;
             }
-        }
-
-        private void StartBlinking(PictureBox light, Color color)
-        {
-            lightToBlink = light;
-            colorToCheck = color;
-            timerBlink.Start();
-        }
-
-        private void StopBlinking()
-        {
-            timerBlink.Stop();
         }
 
         private void TimerSwitch_Tick(object sender, EventArgs e)
@@ -72,14 +58,13 @@ namespace TrafficLights
 
         private void SwitchLights()
         {
-            switch (timeCounter)
+            switch (timerCounter)
             {
                 case 0:
                     RedLight.BackColor = Color.Red;
                     break;
                 case 3:
                     YellowLight.BackColor = Color.Yellow;
-                    //RedLight.BackColor = Color.Gray;
                     break;
                 case 5:
                     RedLight.BackColor = Color.Gray;
@@ -87,23 +72,23 @@ namespace TrafficLights
                     GreenLight.BackColor = Color.Green;
                     break;
                 case 6:
-                    StartBlinking(GreenLight, Color.Green);
+                    timerBlink.Start();
                     break;
                 case 8:
-                    StopBlinking();
+                    timerBlink.Stop();
                     YellowLight.BackColor = Color.Yellow;
                     GreenLight.BackColor = Color.Gray;
                     break;
                 case 10:
                     YellowLight.BackColor = Color.Gray;
                     RedLight.BackColor = Color.Red;
-                    timeCounter = -1;
+                    timerCounter = -1;
                     break;
             }
-            timeCounter++;
+            timerCounter++;
         }
 
-        private void InitializeTrafficLights()
+        private void InitializeTrafficLight()
         {
             RedLight.BackColor = Color.Gray;
             YellowLight.BackColor = Color.Gray;
